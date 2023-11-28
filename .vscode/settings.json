@@ -1,3 +1,4 @@
 {
-    "editor.fontFamily": "'Consolas', 'monospace', monospace"
+    "editor.fontFamily": "'Courier', 'monospace', monospace",
+    "editor.fontSize": 14
 }
