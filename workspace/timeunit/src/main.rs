@@ -1,7 +1,7 @@
 // Result handling + Custom enum type exercise
 
 // with thiserror crate
-// #[derive(Debug)]
+// #[derive(Debug, Clone)]
 // pub struct TimeError {
 //     pub message: String,
 // }
@@ -18,7 +18,7 @@
 
 // with thiserror crate
 use thiserror::Error;
-#[derive(Error, Debug)]
+#[derive(Error, Debug, Clone)]
 #[error("{message}")]
 pub struct TimeError {
     pub message: String,
@@ -58,14 +58,26 @@ impl TimeUnit {
     }
 }
 
+#[derive(Copy, Clone, Debug, PartialEq)]
+enum RoughTime {
+    InThePast(TimeUnit, u32),
+    JustNow,
+    InTheFuture(TimeUnit, u32),
+}
+
 fn main() {
-    let res = match TimeUnit::new("sec") {
+    let res = match TimeUnit::new("seconds") {
         Ok(v) => v,
         Err(e) => {
             eprintln!("{}", e);
             std::process::exit(1);
         }
     };
+
+    let four_score_and_seven_years_ago = 
+        RoughTime::InThePast(TimeUnit::Years, 4*20 + 7);
+    let three_hours_from_now =
+        RoughTime::InTheFuture(TimeUnit::Hours, 3);
 }
 
 #[test]
