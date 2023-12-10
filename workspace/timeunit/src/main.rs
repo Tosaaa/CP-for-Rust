@@ -1,16 +1,28 @@
-#[derive(Debug, Clone)]
+// Result handling + Custom enum type exercise
+
+// with thiserror crate
+// #[derive(Debug)]
+// pub struct TimeError {
+//     pub message: String,
+// }
+
+// use std::fmt;
+// impl fmt::Display for TimeError {
+//     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+//         write!(f, "{}", self.message)
+//     }
+// }
+
+// impl std::error::Error for TimeError {}
+
+
+// with thiserror crate
+use thiserror::Error;
+#[derive(Error, Debug)]
+#[error("{message}")]
 pub struct TimeError {
     pub message: String,
 }
-
-use std::fmt;
-impl fmt::Display for TimeError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        write!(f, "{}", self.message)
-    }
-}
-
-impl std::error::Error for TimeError {}
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 enum TimeUnit {
@@ -47,7 +59,13 @@ impl TimeUnit {
 }
 
 fn main() {
-    
+    let res = match TimeUnit::new("sec") {
+        Ok(v) => v,
+        Err(e) => {
+            eprintln!("{}", e);
+            std::process::exit(1);
+        }
+    };
 }
 
 #[test]
