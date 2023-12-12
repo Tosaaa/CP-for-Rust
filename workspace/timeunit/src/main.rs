@@ -65,6 +65,16 @@ enum RoughTime {
     InTheFuture(TimeUnit, u32),
 }
 
+fn rough_time_to_english(rt: RoughTime) -> String {
+    match rt {
+        RoughTime::InThePast(unit, 1) => format!("a {} ago", unit.singular()),
+        RoughTime::InThePast(units, count) => format!("{} {} ago", count, units.plural()),
+        RoughTime::JustNow => format!("just now"),
+        RoughTime::InTheFuture(unit, 1) => format!("a {} from now", unit.singular()),
+        RoughTime::InTheFuture(units, count) => format!("{} {} from now", count, units.plural())
+    }
+}
+
 fn main() {
     let res = match TimeUnit::new("seconds") {
         Ok(v) => v,
@@ -78,6 +88,9 @@ fn main() {
         RoughTime::InThePast(TimeUnit::Years, 4*20 + 7);
     let three_hours_from_now =
         RoughTime::InTheFuture(TimeUnit::Hours, 3);
+
+    println!("{}", rough_time_to_english(four_score_and_seven_years_ago));
+    println!("{}", rough_time_to_english(three_hours_from_now));
 }
 
 #[test]
